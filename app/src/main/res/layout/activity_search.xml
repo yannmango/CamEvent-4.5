@@ -19,9 +19,9 @@
             android:src="@drawable/location"
             android:tint="@color/appBlue"/>
         <Spinner
-            android:layout_width="match_parent"
+            android:layout_width="240dp"
             android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
+            android:layout_marginLeft="16dp"
             android:id="@+id/spinnerBuilding"
             style="@style/Widget.AppCompat.Spinner.Underlined"
             android:popupBackground="@color/background"/>
