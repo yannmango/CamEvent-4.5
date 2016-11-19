@@ -158,9 +158,9 @@ public class  MainActivity extends BaseActivity implements NavigationView.OnNavi
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        /*if (id == R.id.action_settings) {
             return true;
-        }
+        }*/
 
         if(id==R.id.nav_search){
             goToSearchActivity();
@@ -171,9 +171,9 @@ public class  MainActivity extends BaseActivity implements NavigationView.OnNavi
         if(id==R.id.nav_map){
             goToMapActivity();
         }
-        if (id == R.id.nav_logout) {
+        /*if (id == R.id.nav_logout) {
             logOut();
-        }
+        }*/
         return super.onOptionsItemSelected(item);
     }
 
