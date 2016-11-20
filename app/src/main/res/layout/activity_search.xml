@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/background">
+    android:background="@color/window_bgcolor">
 
     <RelativeLayout
         android:layout_width="260dp"
@@ -11,8 +11,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="90dp">
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
@@ -24,7 +24,7 @@
             android:layout_marginLeft="16dp"
             android:id="@+id/spinnerBuilding"
             style="@style/Widget.AppCompat.Spinner.Underlined"
-            android:popupBackground="@color/background"/>
+            android:popupBackground="@color/window_bgcolor"/>
 
     </RelativeLayout>
 
@@ -34,8 +34,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp">
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
@@ -54,8 +54,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp">
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center"

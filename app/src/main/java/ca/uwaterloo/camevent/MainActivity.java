@@ -68,12 +68,12 @@ public class  MainActivity extends BaseActivity implements NavigationView.OnNavi
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[] {
                     new MyPostsFragment(),
-                    new MyTopPostsFragment(),
+                    new Favourite(),
                     new Recom(),
             };
             private final String[] mFragmentNames = new String[] {
                     "My Posts",
-                    "My Top",
+                    "Favourite",
                     "RECOM"
             };
             @Override
@@ -196,6 +196,11 @@ public class  MainActivity extends BaseActivity implements NavigationView.OnNavi
         Intent intent = new Intent(this, PostActivity.class);
         startActivity(intent);
     }
+    private void goToAboutActivity() {
+        //jump to second activity
+        Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
+    }
     private void logOut(){
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(this, HomeActivity.class);
@@ -243,7 +248,9 @@ public class  MainActivity extends BaseActivity implements NavigationView.OnNavi
         if(id==R.id.nav_logout){
             logOut();
         }
-
+        if(id==R.id.nav_about){
+            goToAboutActivity();
+        }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

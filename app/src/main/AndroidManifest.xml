@@ -101,7 +101,8 @@
             android:name=".DisplayWaterlooActivity"
             android:label="@string/title_activity_display_waterloo"
             android:theme="@style/AppTheme" />
-        <activity android:name=".MyTopFragment"></activity>
+        <activity android:name=".MyTopFragment" />
+        <activity android:name=".AboutActivity"></activity>
     </application>
 
 </manifest>
