@@ -1,6 +1,7 @@
 package ca.uwaterloo.camevent;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,9 +24,14 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class  MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class  MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, DialogInterface.OnClickListener {
 
     private static final String TAG = "MainActivity";
+    private int theme = 0;
+    public final static int CREATE_DIALOG  = -1;
+    public final static int THEME_HOLO_LIGHT  = 0;
+    public final static int THEME_BLACK  = 1;
+    int position;
 
     private FragmentPagerAdapter mPagerAdapter;
 
@@ -33,7 +40,23 @@ public class  MainActivity extends BaseActivity implements NavigationView.OnNavi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        position = getIntent().getIntExtra("position", -1);
+
+        switch(position)
+        {
+            /*case CREATE_DIALOG:
+                createDialog();
+                break;*/
+            case THEME_HOLO_LIGHT:
+                setTheme(R.style.RedTheme);
+                break;
+            case THEME_BLACK:
+                setTheme(R.style.BrownTheme);
+                break;
+            default:
+        }
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         // Create the adapter that will return a fragment for each section
@@ -84,13 +107,10 @@ public class  MainActivity extends BaseActivity implements NavigationView.OnNavi
         View headerView = navigationView.getHeaderView(0);
         TextView emailText = (TextView) headerView.findViewById(R.id.email);
 
-
-        TextView username = (TextView) headerView.findViewById(R.id.username);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // User is signed in
             // Name, email address, and profile photo Url
-            String name = user.getDisplayName();
             String email = user.getEmail();
             Uri photoUrl = user.getPhotoUrl();
 
@@ -98,7 +118,6 @@ public class  MainActivity extends BaseActivity implements NavigationView.OnNavi
             // authenticate with your backend server, if you have one. Use
             // FirebaseUser.getToken() instead.
             String uid = user.getUid();
-            username.setText(name);
             emailText.setText(email);
         } else {
             // No user is signed in
@@ -106,6 +125,44 @@ public class  MainActivity extends BaseActivity implements NavigationView.OnNavi
         }
 
         navigationView.setNavigationItemSelectedListener(this);
+    }
+    private void createDialog()
+    {
+        /** Options for user to select*/
+        String choose[] = {"Theme_Holo_Light","Theme_Black"};
+
+        AlertDialog.Builder b = new AlertDialog.Builder(this);
+
+        /** Setting a title for the window */
+        b.setTitle("Choose your Application Theme");
+
+        /** Setting items to the alert dialog */
+        b.setSingleChoiceItems(choose, 0, null);
+
+        /** Setting a positive button and its listener */
+        b.setPositiveButton("OK",this);
+
+        /** Setting a positive button and its listener */
+        b.setNegativeButton("Cancel", null);
+
+        /** Creating the alert dialog window using the builder class */
+        AlertDialog d = b.create();
+
+        /** show dialog*/
+        d.show();
+    }
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        // TODO Auto-generated method stub
+        AlertDialog alert = (AlertDialog)dialog;
+        int position = alert.getListView().getCheckedItemPosition();
+
+        finish();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("position", position);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     @Override
@@ -158,9 +215,6 @@ public class  MainActivity extends BaseActivity implements NavigationView.OnNavi
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         if(id==R.id.nav_search){
             goToSearchActivity();
@@ -171,9 +225,6 @@ public class  MainActivity extends BaseActivity implements NavigationView.OnNavi
         if(id==R.id.nav_map){
             goToMapActivity();
         }
-        if (id == R.id.nav_logout) {
-            logOut();
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -181,6 +232,12 @@ public class  MainActivity extends BaseActivity implements NavigationView.OnNavi
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        if(id==R.id.nav_theme){
+            createDialog();
+        }
+        if(id==R.id.nav_logout){
+            logOut();
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
