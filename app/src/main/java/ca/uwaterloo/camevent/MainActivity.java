@@ -40,12 +40,12 @@ public class  MainActivity extends BaseActivity implements NavigationView.OnNavi
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[] {
                     new MyPostsFragment(),
-                    new Favourite(),
+                    new MyTopFragment(),
                     new Recom(),
             };
             private final String[] mFragmentNames = new String[] {
                     "My Posts",
-                    "FAVOURITE",
+                    "My Top",
                     "RECOM"
             };
             @Override
