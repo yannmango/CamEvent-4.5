@@ -29,8 +29,10 @@ public class  MainActivity extends BaseActivity implements NavigationView.OnNavi
     private static final String TAG = "MainActivity";
     private int theme = 0;
     public final static int CREATE_DIALOG  = -1;
-    public final static int THEME_HOLO_LIGHT  = 0;
-    public final static int THEME_BLACK  = 1;
+    public final static int Red_Theme  = 0;
+    public final static int Brown_Theme  = 1;
+    public final static int BlueGrey_Theme=2;
+
     int position;
 
     private FragmentPagerAdapter mPagerAdapter;
@@ -47,11 +49,14 @@ public class  MainActivity extends BaseActivity implements NavigationView.OnNavi
             /*case CREATE_DIALOG:
                 createDialog();
                 break;*/
-            case THEME_HOLO_LIGHT:
+            case Red_Theme:
                 setTheme(R.style.RedTheme);
                 break;
-            case THEME_BLACK:
+            case Brown_Theme:
                 setTheme(R.style.BrownTheme);
+                break;
+            case BlueGrey_Theme:
+                setTheme(R.style.BlueGreyTheme);
                 break;
             default:
         }
@@ -63,12 +68,12 @@ public class  MainActivity extends BaseActivity implements NavigationView.OnNavi
         mPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             private final Fragment[] mFragments = new Fragment[] {
                     new MyPostsFragment(),
-                    new Favourite(),
+                    new MyTopPostsFragment(),
                     new Recom(),
             };
             private final String[] mFragmentNames = new String[] {
                     "My Posts",
-                    "FAVOURITE",
+                    "My Top",
                     "RECOM"
             };
             @Override
@@ -129,7 +134,7 @@ public class  MainActivity extends BaseActivity implements NavigationView.OnNavi
     private void createDialog()
     {
         /** Options for user to select*/
-        String choose[] = {"Theme_Holo_Light","Theme_Black"};
+        String choose[] = {"Red_Theme","Brown_Theme","BlueGrey_Theme"};
 
         AlertDialog.Builder b = new AlertDialog.Builder(this);
 
