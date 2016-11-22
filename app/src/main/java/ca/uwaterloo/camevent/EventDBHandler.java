@@ -123,20 +123,14 @@ public class EventDBHandler extends SQLiteOpenHelper {
     public List<Eventinfo> getAllEventsbysearch( String locationname,String titlekey,String date) {
         List<Eventinfo> eventinfos = new ArrayList<>();
         String query = null;
-        if(locationname!=""&titlekey==""&date=="")
+        if(titlekey.equals("")&date.equals(""))
         {query ="SELECT * FROM event WHERE event_location_name LIKE"+"'%"+locationname+"%'";}
-        if(titlekey!=""&locationname==""&date=="")
-        {query ="SELECT * FROM event WHERE event_title LIKE"+"'%"+titlekey+"%'"; }
-        if(date!=""&locationname==""&titlekey=="")
-        {query ="SELECT * FROM event WHERE event_date ="+"'"+date+"'";}
-        if(locationname!=""&titlekey!=""&date=="")
-        {query ="SELECT * FROM event WHERE event_location_name LIKE"+"'%"+locationname+"%'"+"OR event_title LIKE"+"'%"+titlekey+"%'";}
-        if(locationname!=""&date!=""&titlekey=="")
-        {query ="SELECT * FROM event WHERE event_location_name LIKE"+"'%"+locationname+"%'"+"OR event_date ="+"'"+date+"'";}
-        if(date!=""&titlekey!=""&locationname=="")
-        {query ="SELECT * FROM event WHERE event_title LIKE"+"'%"+titlekey+"%'"+"OR event_date ="+"'"+date+"'";}
-        if(date!=""&titlekey!=""&locationname!="")
-        {query ="SELECT * FROM event WHERE event_location_name LIKE"+"'%"+locationname+"%'"+"OR event_title LIKE"+"'%"+titlekey+"%'"+"OR event_date ="+"'"+date+"'";}
+        if(date.equals("")&!titlekey.equals(""))
+        {query ="SELECT * FROM event WHERE event_location_name LIKE"+"'%"+locationname+"%'"+"AND event_title LIKE"+"'%"+titlekey+"%'";}
+        if(titlekey.equals("")&!date.equals(""))
+        {query ="SELECT * FROM event WHERE event_location_name LIKE"+"'%"+locationname+"%'"+"AND event_date ="+"'"+date+"'";}
+        if(!titlekey.equals("")&!date.equals(""))
+        {query ="SELECT * FROM event WHERE event_location_name LIKE"+"'%"+locationname+"%'"+"AND event_title LIKE"+"'%"+titlekey+"%'"+"AND event_date ="+"'"+date+"'";}
         db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query,null);
         if(cursor.moveToFirst()) {
