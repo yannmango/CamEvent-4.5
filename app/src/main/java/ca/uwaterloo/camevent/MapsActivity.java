@@ -82,21 +82,40 @@ public class MapsActivity extends AppCompatActivity
         if (locationname.equals("") & date.equals("") & titlekey.equals(""))
         {
             eventinfos = eventdb.getAllEvents();
-          }
+            for(int i=0;i<eventinfos.size();i++) {
+                //Log.d("running", String.valueOf(eventinfos.size()));
+                if(eventinfos.get(i).getEventLatitude()!="0"&eventinfos.get(i).getEventLongitude()!="0"){
+                    //int positionchange =i;
+                    // List<Marker> markers = new ArrayList<>();
+                    Marker marker=mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(Double.parseDouble(eventinfos.get(i).getEventLatitude()),Double.parseDouble(eventinfos.get(i).getEventLongitude())))
+                            .title(eventinfos.get(i).getEventTitle())
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.waterloo))
+                    );
+                    marker.setTag(0);
+                    //markers.add(marker);
+                }
+            }
+        }
         else
         {
             eventinfos=eventdb.getAllEventsbysearch(locationname,titlekey,date);
+            for(int i=0;i<eventinfos.size();i++) {
+                //Log.d("running", String.valueOf(eventinfos.size()));
+                if(eventinfos.get(i).getEventLatitude()!="0"&eventinfos.get(i).getEventLongitude()!="0"){
+                    //int positionchange =i;
+                    // List<Marker> markers = new ArrayList<>();
+                    Marker marker=mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(Double.parseDouble(eventinfos.get(i).getEventLatitude())+0.0001*i,Double.parseDouble(eventinfos.get(i).getEventLongitude())))
+                            .title(eventinfos.get(i).getEventTitle())
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.waterloo))
+                    );
+                    marker.setTag(0);
+                    //markers.add(marker);
+                }
+            }
         }
-        for(int i=0;i<eventinfos.size();i++) {
-            //Log.d("running", String.valueOf(eventinfos.size()));
-            if(eventinfos.get(i).getEventLatitude()!="0"&eventinfos.get(i).getEventLongitude()!="0"){
-            Marker marker=mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(Double.parseDouble(eventinfos.get(i).getEventLatitude()),Double.parseDouble(eventinfos.get(i).getEventLongitude())))
-                    .title(eventinfos.get(i).getEventTitle())
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.waterloo))
-            );
-            marker.setTag(0);}
-        }
+
         // Set a listener for marker click.
         mMap.setOnMarkerClickListener(this);
         enableMyLocation();
