@@ -12,11 +12,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,6 +42,7 @@ public class Favourite extends Fragment {
     private FirebaseRecyclerAdapter<Post, PostViewHolder> mAdapter;
     private RecyclerView mRecycler;
     private LinearLayoutManager mManager;
+    String loc;
 
     public Favourite() {}
 
@@ -65,55 +68,71 @@ public class Favourite extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // Set up Layout Manager, reverse layout
-        mManager = new LinearLayoutManager(getActivity());
-        mManager.setReverseLayout(true);
-        mManager.setStackFromEnd(true);
-        mRecycler.setLayoutManager(mManager);
-
-        // Set up FirebaseRecyclerAdapter with the Query
-        Query postsQuery = getQuery(mDatabase);
-        mAdapter = new FirebaseRecyclerAdapter<Post, PostViewHolder>(Post.class, R.layout.item_post,
-                PostViewHolder.class, postsQuery) {
+        spinnerBuilding.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            protected void populateViewHolder(final PostViewHolder viewHolder, final Post model, final int position) {
-                final DatabaseReference postRef = getRef(position);
+            public void onItemSelected(AdapterView<?> adapter, View v,
+                                       int position, long id) {
+                // On selecting a spinner item
+                loc = adapter.getItemAtPosition(position).toString();
+                // Showing selected spinner item
+//                Toast.makeText(getContext(),
+//                        "Selected Country : " + loc, Toast.LENGTH_SHORT).show();
+                // Set up Layout Manager, reverse layout
+                mManager = new LinearLayoutManager(getActivity());
+                mManager.setReverseLayout(true);
+                mManager.setStackFromEnd(true);
+                mRecycler.setLayoutManager(mManager);
 
-                // Set click listener for the whole post view
-                final String postKey = postRef.getKey();
-                viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                // Set up FirebaseRecyclerAdapter with the Query
+                Query postsQuery = getQuery(mDatabase);
+                mAdapter = new FirebaseRecyclerAdapter<Post, PostViewHolder>(Post.class, R.layout.item_post,
+                        PostViewHolder.class, postsQuery) {
                     @Override
-                    public void onClick(View v) {
-                        // Launch PostDetailActivity
-                        Intent intent = new Intent(getActivity(), DisplayActivity.class);
-                        intent.putExtra(DisplayActivity.EXTRA_POST_KEY, postKey);
-                        startActivity(intent);
+                    protected void populateViewHolder(final PostViewHolder viewHolder, final Post model, final int position) {
+                        final DatabaseReference postRef = getRef(position);
+
+                        // Set click listener for the whole post view
+                        final String postKey = postRef.getKey();
+                        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // Launch PostDetailActivity
+                                Intent intent = new Intent(getActivity(), DisplayActivity.class);
+                                intent.putExtra(DisplayActivity.EXTRA_POST_KEY, postKey);
+                                startActivity(intent);
+                            }
+                        });
+
+                        // Determine if the current user has liked this post and set UI accordingly
+                        if (model.stars.containsKey(getUid())) {
+                            viewHolder.starView.setImageResource(R.drawable.ic_toggle_star_24);
+                        } else {
+                            viewHolder.starView.setImageResource(R.drawable.ic_toggle_star_outline_24);
+                        }
+
+                        // Bind Post to ViewHolder, setting OnClickListener for the star button
+                        viewHolder.bindToPost(model, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View starView) {
+                                // Need to write to both places the post is stored
+                                DatabaseReference globalPostRef = mDatabase.child("posts").child(postRef.getKey());
+                                DatabaseReference userPostRef = mDatabase.child("user-posts").child(model.uid).child(postRef.getKey());
+
+                                // Run two transactions
+                                onStarClicked(globalPostRef);
+                                onStarClicked(userPostRef);
+                            }
+                        });
                     }
-                });
-
-                // Determine if the current user has liked this post and set UI accordingly
-                if (model.stars.containsKey(getUid())) {
-                    viewHolder.starView.setImageResource(R.drawable.ic_toggle_star_24);
-                } else {
-                    viewHolder.starView.setImageResource(R.drawable.ic_toggle_star_outline_24);
-                }
-
-                // Bind Post to ViewHolder, setting OnClickListener for the star button
-                viewHolder.bindToPost(model, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View starView) {
-                        // Need to write to both places the post is stored
-                        DatabaseReference globalPostRef = mDatabase.child("posts").child(postRef.getKey());
-                        DatabaseReference userPostRef = mDatabase.child("user-posts").child(model.uid).child(postRef.getKey());
-
-                        // Run two transactions
-                        onStarClicked(globalPostRef);
-                        onStarClicked(userPostRef);
-                    }
-                });
+                };
+                mRecycler.setAdapter(mAdapter);
             }
-        };
-        mRecycler.setAdapter(mAdapter);
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+
     }
 
     // [START post_stars_transaction]
@@ -175,7 +194,7 @@ public class Favourite extends Fragment {
 
     public Query getQuery(DatabaseReference databaseReference){
 
-        String loc = spinnerBuilding.getSelectedItem().toString();
+        loc = spinnerBuilding.getSelectedItem().toString();
         Query myFavourite = databaseReference.child("posts").orderByChild("loc")
                 .equalTo(loc);
         return myFavourite;
