@@ -81,7 +81,7 @@
             android:layout_height="match_parent"
             android:textSize="@dimen/textsize_normal"
             android:onClick="search"
-            android:hint="@string/search"
+            android:text="@string/search"
             android:background="@drawable/rounded_edittext"
             android:textColor="@color/colorAccent"
             />
