@@ -102,6 +102,7 @@
             android:label="@string/title_activity_display_waterloo"
             android:theme="@style/AppTheme" />
         <activity android:name=".AboutActivity"></activity>
+        <activity android:name=".ResetPasswordActivity"></activity>
     </application>
 
 </manifest>

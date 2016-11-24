@@ -49,5 +49,13 @@
         android:layout_marginTop="28dp"
         android:layout_below="@+id/editText_password"
         android:layout_centerHorizontal="true" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Forgot Password"
+        android:id="@+id/textView_forgotPassword"
+        android:layout_below="@+id/button_signIn"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
