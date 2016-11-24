@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:background="@color/window_bgcolor">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="260dp"
         android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
@@ -19,14 +19,14 @@
             android:src="@drawable/location"
             android:tint="@color/appBlue"/>
         <Spinner
-            android:layout_width="240dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
             android:id="@+id/spinnerBuilding"
             style="@style/Widget.AppCompat.Spinner.Underlined"
             android:popupBackground="@color/window_bgcolor"/>
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="260dp"
@@ -61,6 +61,7 @@
             android:layout_gravity="center"
             android:src="@drawable/word"
             android:tint="@color/appBlue"/>
+
         <EditText
             android:id="@+id/keyWord"
             android:layout_width="match_parent"
@@ -78,9 +79,11 @@
             android:id="@+id/search_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textSize="@dimen/textsize_normal"
             android:onClick="search"
             android:hint="@string/search"
-            android:background="@drawable/button"
+            android:background="@drawable/rounded_edittext"
+            android:textColor="@color/colorAccent"
             />
     </LinearLayout>
 
