@@ -7,9 +7,36 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class AboutActivity extends Activity {
+    private int theme = 0;
+    public final static int CREATE_DIALOG  = -1;
+    public final static int Red_Theme  = 0;
+    public final static int Brown_Theme  = 1;
+    public final static int BlueGrey_Theme=2;
+    public final static int Default_Theme=3;
+    int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        position = getIntent().getIntExtra("position", -1);
+
+        switch(position)
+        {
+            /*case CREATE_DIALOG:
+                createDialog();
+                break;*/
+            case Red_Theme:
+                setTheme(R.style.RedTheme);
+                break;
+            case Brown_Theme:
+                setTheme(R.style.BrownTheme);
+                break;
+            case BlueGrey_Theme:
+                setTheme(R.style.BlueGreyTheme);
+                break;
+            case Default_Theme:
+                setTheme(R.style.AppTheme);
+
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
     }
@@ -38,3 +65,4 @@ public class AboutActivity extends Activity {
 
     }
 }
+

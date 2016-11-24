@@ -191,10 +191,14 @@ public class  MainActivity extends BaseActivity implements NavigationView.OnNavi
 
         finish();
         Intent intent = new Intent(this, MainActivity.class);
+
         intent.putExtra("position", position);
+
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
         startActivity(intent);
+
     }
 
     @Override
@@ -226,6 +230,7 @@ public class  MainActivity extends BaseActivity implements NavigationView.OnNavi
     private void goToAboutActivity() {
         //jump to second activity
         Intent intent = new Intent(this, AboutActivity.class);
+        intent.putExtra("position", position);
         startActivity(intent);
     }
     private void logOut(){
@@ -275,7 +280,6 @@ public class  MainActivity extends BaseActivity implements NavigationView.OnNavi
         intent.setAction(Intent.ACTION_GET_CONTENT);//
         startActivityForResult(Intent.createChooser(intent, "Select File"),SELECT_FILE);
     }
-    //- See more at: http://www.theappguruz.com/blog/android-take-photo-camera-gallery-code-sample#sthash.3i3KjY1Q.dpuf
 
 
     private void cameraIntent() {
@@ -342,7 +346,7 @@ public class  MainActivity extends BaseActivity implements NavigationView.OnNavi
         }
         imageView.setImageBitmap(bm);
     }
-    //- See more at: http://www.theappguruz.com/blog/android-take-photo-camera-gallery-code-sample#sthash.3i3KjY1Q.dpuf
+
 
     private void onCaptureImageResult(Intent data) {
         Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
